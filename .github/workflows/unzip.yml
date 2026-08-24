@@ -1,8 +1,6 @@
 name: ci
 on:
-  push:
-    paths:
-      - 'resimler.zip'
+  workflow_dispatch: # Robotu tamamen manuel (elle basmalı) yapar.
 
 permissions:
   contents: write
@@ -13,12 +11,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: |
-          mkdir -p resimler
-          unzip -o resimler.zip -d resimler/
+      - name: Extract archive directly to main
+        run: |
+          unzip -o resimler.zip
           rm resimler.zip
 
-      - run: |
+      - name: Commit and push changes as developer
+        run: |
           git config --global user.name "Demirtris"
           git config --global user.email "demirtris@://github.com"
           git add .
