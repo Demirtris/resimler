@@ -1,0 +1,26 @@
+name: ci
+on:
+  push:
+    paths:
+      - 'resimler.zip'
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: |
+          mkdir -p resimler
+          unzip -o resimler.zip -d resimler/
+          rm resimler.zip
+
+      - run: |
+          git config --global user.name "Demirtris"
+          git config --global user.email "demirtris@://github.com"
+          git add .
+          git diff-index --quiet HEAD || git commit -m "update"
+          git push
